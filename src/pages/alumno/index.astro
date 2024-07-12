@@ -1,0 +1,40 @@
+---
+import Layout from "../../layout/Layout.astro";
+import axios from "axios";
+
+  let alumnos = [];
+  const response = await axios.get("http://localhost:3000/alumno");
+  alumnos = response.data;
+---
+
+<Layout title="Alumno - Lista">
+  <nav class="bg-white mb-10">
+    <ul class="flex justify-between items-center px-8 h-20 shadow-xl">
+      <li class="text-3xl font-bold">
+        <p>Lista de Alumnos</p>
+      </li>
+      <a href="/alumno/crear" class="text-xl bg-green-500 hover:bg-green-600 transition-all duration-300 text-white font-semibold px-8 py-2 rounded-lg">
+        <p>Añadir alumno</p>
+      </a>
+    </ul>
+  </nav>
+
+  <section class="mx-auto max-w-screen-xl bg-white shadow-xl rounded-xl grid grid-cols-4 p-8 gap-8 mb-10">
+	{
+    alumnos.length > 0 ?
+      alumnos.map((alumno) => {
+        return (
+        <a href={`/alumno/${alumno.id}`} class="shadow-lg rounded-xl overflow-hidden hover:shadow-lg hover:shadow-black transition-all duration-300" >
+          <div>
+            <img src="./image.png" alt="">
+          </div>
+          <p class="font-bold text-xl px-4 py-4 truncate" >{alumno.nombre} </p>
+        </a>
+        )
+      })
+      :
+      <p class="col-span-4 text-center font-semibold text-2xl">Lo sentimos, no hay alumnos registrados.</p>
+  }
+  </section>
+
+</Layout>

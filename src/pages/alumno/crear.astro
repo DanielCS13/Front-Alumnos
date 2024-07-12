@@ -1,0 +1,132 @@
+---
+import Layout from "../../layout/Layout.astro";
+---
+
+<Layout title="Alumno - Crear">
+  <nav class="bg-white mb-10">
+    <ul class="flex justify-between items-center px-8 h-20 shadow-xl">
+      <li class="text-3xl font-bold">
+        <p>Lista de Alumnos</p>
+      </li>
+      <li>
+        <a href="/alumno"
+        class="text-3xl bg-black hover:bg-white hover:text-black hover:border-2 hover:border-black transition-all duration-300 text-white font-semibold p-2 w-14 aspect-square rounded-full flex justify-center items-center"
+        >
+          <i class="fa-solid fa-angle-left"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <form
+    class="mx-auto max-w-xl bg-white shadow-xl rounded-xl p-8 flex flex-col space-y-10"
+  >
+    <div class="space-y-2">
+      <h1 class="font-bold text-4xl">Formulario de estudiante</h1>
+      <p class="text-gray-500">
+        Ingrese información para almacenar información del estudiante.
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      <div class="flex flex-col space-y-2">
+        <label class="font-semibold">Nombre</label>
+        <input
+          type="text"
+          required aria-invalid="true" 
+          title="Por favor, ingrese un nombre para el estudiante"
+          oninvalid="this.setCustomValidity('Por favor, ingrese un nombre para el estudiante')"
+          oninput="this.setCustomValidity('')"
+          id="nombre"
+          name="nombre"
+          placeholder="Nombre del estudiante"
+          class="p-2 rounded-lg border-2 border-gray-300 px-4"
+        />
+      </div>
+      <div class="flex flex-col space-y-2">
+        <label class="font-semibold">Curso</label>
+        <input
+          type="text"
+          required aria-invalid="true" 
+          title="Por favor, ingrese un curso para el estudiante"
+          oninvalid="this.setCustomValidity('Por favor, ingrese un curso para el estudiante')"
+          oninput="this.setCustomValidity('')"
+          id="curso"
+          name="curso"
+          placeholder="Curso del estudiante"
+          class="p-2 rounded-lg border-2 border-gray-300 px-4"
+        />
+      </div>
+      <div class="flex flex-row gap-4">
+        <div class="flex flex-col space-y-2 w-full">
+          <label class="font-semibold">Nota 1</label>
+          <input
+            type="text"
+            required aria-invalid="true" 
+            title="Por favor, ingrese una nota 1 para el estudiante"
+            oninvalid="this.setCustomValidity('Por favor, ingrese una nota 1 para el estudiante')"
+            oninput="this.setCustomValidity('')"
+            id="nota1"
+            name="nota1"
+            placeholder="Nota 1 del curso"
+            class="p-2 rounded-lg border-2 border-gray-300 px-4 w-full"
+          />
+        </div>
+        <div class="flex flex-col space-y-2 w-full">
+          <label class="font-semibold">Nota 2</label>
+          <input
+            type="text"
+            required aria-invalid="true" 
+            title="Por favor, ingrese una nota 2 para el estudiante"
+            oninvalid="this.setCustomValidity('Por favor, ingrese una nota 2 para el estudiante')"
+            oninput="this.setCustomValidity('')"
+            id="nota2"
+            name="nota2"
+            placeholder="Nota 2 del curso"
+            class="p-2 rounded-lg border-2 border-gray-300 px-4 w-full"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end">
+      <button
+        class="text-white bg-red-500 hover:bg-red-600 rounded-lg text-xl font-semibold px-4 py-2 inline-block hover:shadow-lg transition-all duration-300"
+        type="submit">Guardar estudiante</button
+      >
+    </div>
+  </form>
+
+  <script>
+    import axios from "axios";
+
+    document.querySelector("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nombre = (document.querySelector("#nombre") as HTMLInputElement)
+        .value;
+      const curso = (document.querySelector("#curso") as HTMLInputElement)
+        .value;
+      const nota1 = (document.querySelector("#nota1") as HTMLInputElement)
+        .value;
+      const nota2 = (document.querySelector("#nota2") as HTMLInputElement)
+        .value;
+
+        console.log(nota1 + " " + nota2)
+      const response = await axios.post("http://localhost:3000/alumno", {
+        "nombre": nombre,
+        "curso": curso,
+        "nota1": parseFloat(nota1),
+        "nota2": parseFloat(nota2),
+      });
+      if (response.status === 201) {
+        (document.querySelector("#nombre") as HTMLInputElement).value = "";
+        (document.querySelector("#curso") as HTMLInputElement).value = "";
+        (document.querySelector("#nota1") as HTMLInputElement).value = "";
+        (document.querySelector("#nota2") as HTMLInputElement).value = "";
+        window.location.href = "/alumno";
+      } else {
+        alert("Error al crear el servicio");
+      }
+    });
+  </script></Layout
+>

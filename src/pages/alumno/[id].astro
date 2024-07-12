@@ -1,0 +1,66 @@
+---
+import Layout from "../../layout/Layout.astro";
+import axios from "axios";
+
+interface Params {
+    id: string;
+}
+
+const { id } = Astro.params;
+const response = await axios.get("http://localhost:3000/alumno/" + id);
+const alumno = response.data;
+const fechaRegistro = new Date(alumno.fechaRegistro).toLocaleDateString();
+---
+
+<Layout title={`Alumno - ${id}`}>
+  <nav class="bg-white mb-10">
+    <ul class="flex justify-between items-center px-8 h-20 shadow-xl">
+      <li class="text-3xl font-bold">
+        <p >Perfil de estudiante {id}</p>
+      </li>
+      <li>
+        <a href="/alumno"
+        class="text-3xl bg-black hover:bg-white hover:text-black hover:border-2 hover:border-black transition-all duration-300 text-white font-semibold p-2 w-14 aspect-square rounded-full flex justify-center items-center"
+        >
+          <i class="fa-solid fa-angle-left"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="mx-auto w-fit bg-white shadow-xl rounded-xl p-8 flex flex-col items-center space-y-6 mb-10">
+    <div class="rounded-full overflow-hidden w-72">
+        <img src="./../image.png" alt="">
+    </div>
+    <div class="space-y-2 text-center">
+        <h1 class="text-4xl font-bold">{alumno.nombre}</h1>
+        <h4 class="text-xl text-gray-500 font-semibold" >{alumno.curso}</h4>
+    </div>
+    <div class="grid grid-cols-3 gap-x-6 gap-y-2" >
+        <div>
+            <span class="font-semibold text-lg">Nota 1</span>
+            <h3 class="text-4xl font-bold" >{alumno.nota1}</h3>
+        </div>
+        <div>
+            <span class="font-semibold text-lg">Nota 2</span>
+            <h3 class="text-4xl font-bold" >{alumno.nota2}</h3>
+        </div>
+        <div>
+            <span class="font-semibold text-lg">Promedio</span>
+            <h3 class="text-4xl font-bold" >{alumno.promedio}</h3>
+        </div>
+        <div class="col-span-3 text-center">
+            {
+                alumno.promedio >= 13.5 ? 
+                <span class="text-green-500 font-semibold text-lg">Aprobado</span> 
+                : 
+                <span class="text-red-500 font-semibold text-lg">Reprobado</span>
+            }
+        </div>
+    </div>
+    <div class="text-gray-500 font-semibold text-lg">
+        <p>Registrado: {fechaRegistro}</p>
+    </div>
+  </div>
+
+</Layout>
